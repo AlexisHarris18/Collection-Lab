@@ -105,7 +105,7 @@ ostream& operator<<(ostream& out, const Collection<Item>& c) {
 
         if (i < c.curSize - 1) out << " " << endl;
     }
-    return out; 
+    return out;
 }
 
 template<typename Item>
@@ -131,4 +131,45 @@ void Collection<Item>:: operator-(int num) {
     for (int i = 0; i < num; i++) {
         removeEnd();
     }
+}
+
+
+template<typename Item>
+class SortedCollection : public Collection<Item> {
+    public:
+        SortedCollection(){}
+        SortedCollection(int size){}
+        SortedCollection(SortedCollection<Item>& c) {}
+        SortedCollection<Item>& operator+(Item e);
+        SortedCollection<Item>& operator<<(Item e);
+        void SortedAdd(Item e);
+    private:
+
+};
+
+template<typename Item>
+void SortedCollection<Item>::SortedAdd(Item e) {
+    if (this->curSize == this->capacity) {
+        this->expand();
+    }
+    int i = this-> curSize -1;
+    while (i >= 0 && this->elements[i] > e) {
+        this->elements[i + 1] = this->elements[i];
+        i--;
+    }
+    this->elements[i + 1] = e;
+    this->curSize++;
+}
+
+template<typename Item>
+SortedCollection<Item>& SortedCollection<Item>::operator+(Item e) {
+        this->SortedAdd(e);
+        return *this;
+}
+
+template<typename Item>
+SortedCollection<Item>& SortedCollection<Item>::operator<<(Item e) {
+        this->SortedAdd(e);
+        return *this;
+
 }
